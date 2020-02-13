@@ -1,0 +1,214 @@
+
+<nav class="navbar navbar-expand-lg navbar-light"><a class="navbar-brand"><button class="btn">GnApp</button></a><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="nav nav-pills" id="pills-tab" role="tablist">
+            <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Menu</a>
+                <!-- -->
+                <div class="dropdown-menu"><a class="dropdown-item" id="pills-menu-tab" data-toggle="pill" href="#pills-menu" role="tab" aria-controls="pills-menu" aria-selected="true">Menu</a><a class="dropdown-item" id="pills-kategori-tab" data-toggle="pill" href="#pills-kategori"
+                        role="tab" aria-controls="pills-kategori" aria-selected="false">Kategori Menu</a></div>
+            </li>
+            <li class="nav-item"><a class="nav-link" id="pills-user-tab" data-toggle="pill" href="#pills-user" role="tab" aria-controls="pills-user" aria-selected="false">Pengguna</a></li>
+            <li class="nav-item"><a class="nav-link" id="pills-resto-tab" data-toggle="pill" href="#pills-resto" role="tab" aria-controls="pills-resto" aria-selected="false">Tentang Resto</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-menu" role="tabpanel" aria-labelledby="pills-menu-tab">
+            <div class="display-3 text-center mb-3">Daftar Menu</div>
+            <div class="row">
+                <div class="col-md-2"><button class="btn btn-outline-info" data-toggle="modal" data-target="#tambahDanEditMenuModal"><i class="fas fa-plus"></i><span>Tambah menu</span></button></div>
+                <div class="col-md-5 pl-0">
+                    <div class="input-group"><input class="form-control mySearchBar" id="mySearchBar" type="text" placeholder="Cari menu.." />
+                        <div class="input-group-append"><button class="btn btn-dark myBtn" id="myBtn">Cari</button></div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-hover table-responsive-sm mt-2">
+                <thead class="thead-dark">
+                    <th scope="col">Kode Menu</th>
+                    <th scope="col">Nama Menu</th>
+                    <th scope="col">Harga Regular</th>
+                    <th scope="col">Harga Go-Food</th>
+                    <th scope="col">Kategori</th>
+                    <th scope="col">Action</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>3</th>
+                        <td>Ayam bakar</td>
+                        <td>Rp 16.000</td>
+                        <td>Rp 20.000</td>
+                        <td>Menu Bakar</td>
+                        <td><button class="btn btn-danger btn-sm" style="border-radius: 5px;" data-toggle="modal" data-target="#hapusMenuModal"><i class="fas fa-minus"></i></button><button class="btn btn-info btn-sm" style="border-radius: 5px;" data-toggle="modal"
+                                data-target="#tambahDanEditMenuModal"><i class="fas fa-pen"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="pills-user" role="tabpanel" aria-labelledby="pills-user-tab">
+            <div class="display-3 text-center mb-3">Daftar Pengguna</div>
+            <div class="row">
+                <div class="col-md-3"><button class="btn btn-outline-primary" data-toggle="modal" data-target="#tambahDanEditUserModal"><i class="fas fa-plus"></i><span>Tambah Pengguna</span></button></div>
+            </div>
+            <table class="table table-hover table-responsive-sm mt-2">
+                <thead class="thead-dark">
+                    <th scope="col">Nama Pengguna</th>
+                    <th scope="col">PIN</th>
+                    <th scope="col">Action</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Admin</td>
+                        <td>123456</td>
+                        <td><button class="btn btn-danger btn-sm" style="border-radius: 5px;" data-toggle="modal" data-target="#hapusUserModal"><i class="fas fa-minus"></i></button><button class="btn btn-info btn-sm" style="border-radius: 5px;" data-toggle="modal"
+                                data-target="#tambahDanEditUserModal"><i class="fas fa-pen"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="pills-resto" role="tabpanel" aria-labelledby="pills-resto-tab">
+            <div class="display-3 text-center mb-3">Tentang Resto Anda</div>
+            <div class="row justify-content-center">
+                <!-- Tambahin di sini form-->
+                <div class="col-md-8">
+                    <form action=""><input id="idResto" type="hidden" name="idResto" />
+                        <div class="form-group"><label for="namaResto">Nama Resto</label><input class="form-control" id="namaResto" type="text" name="namaResto" /><small class="text-danger" id="namaRestoError"></small></div>
+                        <div class="form-group"><label for="alamatResto">Alamat</label><input class="form-control" id="alamatResto" type="text" name="alamatResto" /><small class="text-danger" id="alamatRestoError"></small></div>
+                        <div class="form-row">
+                            <div class="col form-group"><label class="col-form-label" for="noMobile">Mobile Phone</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text">+62</span></div><input class="form-control" id="noMobile" type="number" name="noMobile" value="" /></div><small class="text-danger form-text" id="noMobileError"></small></div>
+                            <div class="col form-group"><label class="col-form-label" for="noTelp">No Telepon</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text">022</span></div><input class="form-control" id="noTelp" type="number" name="noTelp" value="" /></div><small class="text-danger form-text" id="noTelpError"></small></div>
+                        </div>
+                        <div class="form-group"><label for="footerMsg">Footer (Pesan)</label><input class="form-control" id="footerMsg" type="text" name="footerMsg" /><small class="text-danger" id="footerMsgError"></small></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="pills-kategori" role="tabpanel" aria-labelledby="pills-kategori-tab">
+            <h1 class="display-3 text-center mb-4">Daftar Kategori</h1>
+            <div class="row">
+                <div class="col-md-3"><button class="btn btn-outline-info" data-toggle="modal" data-target="#tambahKategoriModal"><i class="fas fa-plus"></i><span>Tambah Kategori</span></button></div>
+            </div>
+            <table class="table table-hover table-responsive-sm mt-2">
+                <thead class="thead-light">
+                    <th scope="col">Nama Kategori</th>
+                    <th scope="col">Jumlah Menu Yang Termasuk</th>
+                    <th scope="col">Action</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Umum</td>
+                        <td>0</td>
+                        <td><button class="btn btn-danger btn-sm" style="border-radius: 5px;" data-toggle="modal" data-target="#hapusKategoriModal"><i class="fas fa-minus"></i></button><button class="btn btn-info btn-sm" style="border-radius: 5px;" data-toggle="modal"
+                                data-target="#editKategoriModal"><i class="fas fa-pen"></i></button></td>
+                    </tr>
+                    <tr>
+                        <td>Menu Bakar</td>
+                        <td>1</td>
+                        <td><button class="btn btn-danger btn-sm" style="border-radius: 5px;" data-toggle="modal" data-target="#hapusKategoriModal"><i class="fas fa-minus"></i></button><button class="btn btn-info btn-sm" style="border-radius: 5px;" data-toggle="modal"
+                                data-target="#editKategoriModal"><i class="fas fa-pen"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- menu modal-->
+<!-- User Modal-->
+<!-- modal-->
+<!-- menu modal-->
+<div class="modal fade" id="tambahDanEditMenuModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleMenu">Add New Menu</h5><button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+            <div class="modal-body"><input type="hidden" name="idMenu" />
+                <!-- ini paling penting bro-->
+                <div class="form-group"><label class="col-form-label" for="kodeMenu">Kode menu</label><input class="form-control w-50" id="kodeMenu" type="number" name="kodeMenu" value="" /><small class="text-danger form-text" id="kodeMenuError"></small></div>
+                <div class="form-group"><label class="col-form-label" for="namaMenu">Nama menu</label><input class="form-control" id="namaMenu" type="text" name="namaMenu" value="" /><small class="text-danger form-text" id="namaMenuError"></small></div>
+                <div class="form-group"><label class="col-form-label" for="kategori">Kategori</label><select class="form-control" id="kategori" name="kategori"><option value="umum">Umum</option><option value="Menu Bakar">Menu Bakar</option><option value="Menu Goreng">Menu Goreng</option></select></div>
+                <div class="form-row">
+                    <div class="col form-group"><label class="col-form-label" for="hargaRegular">Harga regular</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend"><span class="input-group-text">Rp</span></div><input class="form-control" id="hargaRegular" type="number" name="hargaRegular" value="" /></div><small class="text-danger form-text" id="hargaRegularError"></small></div>
+                    <div class="col form-group"><label class="col-form-label" for="hargaGofood">Harga Go-food</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend"><span class="input-group-text">Rp</span></div><input class="form-control" id="hargaGofoodErorr" type="number" name="hargaGofood" value="" /></div><small class="text-danger form-text" id="hargaGoFoodLabel"></small></div>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-secondary" data-dismiss="modal" type="button">Tutup</button><button class="btn btn-primary">Simpan</button></div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="hapusMenuModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tambahMenuLabel">Delete Menu</h5><button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+            <div class="modal-body">
+                <div class="display-5">Hapus menu &quot;Ayam goreng&quot;?</div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-secondary" data-dismiss="modal" type="button">Tidak</button><button class="btn btn-danger">Ya</button></div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="tambahDanEditUserModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleUser">Add New User</h5><button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+            <div class="modal-body"><input type="hidden" name="idUser" />
+                <!-- ini paling penting bro-->
+                <div class="form-group"><label class="col-form-label" for="namaUser">Nama User</label><input class="form-control" id="namaUser" type="text" name="namaUser" value="" /><small class="text-danger form-text" id="namaUserError"></small></div>
+                <div class="form-group"><label class="col-form-label" for="pinUser">PIN User</label><input class="form-control w-50" id="pinUser" type="number" name="pinUser" value="" /><small class="text-danger form-text" id="pinUserError"></small></div>
+                <div class="form-group"><label class="col-form-label" for="kategori">Kategori</label><select class="form-control" id="kategori" name="kategori"><option value="Admin">Admin</option><option value="Kasir">Kasir</option><option value="Manager">Manager</option></select></div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-secondary" data-dismiss="modal" type="button">Tutup</button><button class="btn btn-primary">Simpan</button></div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="hapusUserModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Menu</h5><button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+            <div class="modal-body">
+                <div class="display-5">Hapus &quot;Dedi Cahya&quot;?</div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-secondary" data-dismiss="modal" type="button">Tidak</button><button class="btn btn-danger">Ya</button></div>
+        </div>
+    </div>
+</div>
+<!-- end User Modal-->
+<!-- Kategori Modal-->
+<div class="modal fade" id="tambahKategoriModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleKategori">Add New Category</h5><button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+            <div class="modal-body">
+                <div class="form-group"><label class="col-form-label" for="namaKategori">Nama Kategori</label><input class="form-control" id="namaKategori" type="text" name="namaKategori" /><small class="text-danger form-text" id="menuLabel"></small></div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-secondary" data-dismiss="modal" type="button">Tutup</button><button class="btn btn-primary">Simpan</button></div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="hapusKategoriModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Menu</h5><button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+            <div class="modal-body">
+                <div class="display-5">Hapus Kategori &quot;Menu Bakar&quot;?</div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-secondary" data-dismiss="modal" type="button">Tidak</button><button class="btn btn-danger">Ya</button></div>
+        </div>
+    </div>
+</div>
+<!-- Kategori Modal-->
+<!-- end modal-->

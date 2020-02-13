@@ -1,0 +1,60 @@
+<div class="container" style="height: 250px;">
+    <div class="jumbotron bg-light">
+        <div class="page-header">
+            <h1 class="display-3">GnAPP</h1>
+        </div>
+        <p>Aplikasi kasir POS dengan NodeJS</p>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-md-3" style="margin-bottom:30px;">
+            <div class="card bg-danger text-white"><i class="fas fa-user-cog fa-5x text-center"
+                    style="margin-top:20px;"></i>
+                <div class="card-body">
+                    <h4 class="card-title text-center">Admin</h4>
+                    <p class="card-text">Atur menu, harga dan lainnya di halaman ini</p>
+                    <input type="hidden" name="iconClass" value="user-cog" />
+                    <input type="hidden" name="warnaClass" value="danger" />
+                    <input type="hidden" name="loginAs" value="admin" />
+                    <a class="btn w-100 btn-outline-light" href="/loginAdmin">Telusuri</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3" style="margin-bottom:30px;">
+            <div class="card bg-info text-white">
+                <i class="fas fa-calculator fa-5x text-center" style="margin-top:20px;"></i>
+                <div class="card-body">
+                    <h4 class="card-title text-center">Kasir</h4>
+                    <p class="card-text">Urusan hitung-menghitung ada di halaman ini</p>
+                    <input type="hidden" name="iconClass" value="calculator" />
+                    <input type="hidden" name="warnaClass" value="info" />
+                    <input type="hidden" name="loginAs" value="kasir" />
+                    <a class="btn w-100 btn-outline-light" href="/loginKasir">Telusuri</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3" style="margin-bottom:30px;">
+            <div class="card bg-warning text-white">
+                <i class="fas fa-wrench fa-5x text-center" style="margin-top:20px;"></i>
+                <div class="card-body">
+                    <h4 class="card-title text-center">Setup</h4>
+                    <p class="card-text">Setup your device here (Printer, database, etc.)</p>
+                    <a class="btn w-100 btn-outline-light" href="/setup">Telusuri</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3" style="margin-bottom:30px;">
+            <div class="card bg-dark text-white"><i class="fas fa-store fa-5x text-center" style="margin-top:20px;"></i>
+                <div class="card-body">
+                    <h4 class="card-title text-center">Taking Order</h4>
+                    <p class="card-text">Pesan makanan dari Android bisa di halaman ini</p>
+                    <input type="hidden" name="iconClass" value="store" />
+                    <input type="hidden" name="warnaClass" value="dark" />
+                    <input type="hidden" name="loginAs" value="waiter" />
+                    <a class="btn w-100 btn-outline-light" href="/loginTakingOrder">Telusuri</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
