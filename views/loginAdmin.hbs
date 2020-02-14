@@ -1,12 +1,14 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-7">
+            {{#if isError}}
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                <strong>{{pesan.header}}</strong> {{pesan.isiPesan}}.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            {{/if}}
         </div>
     </div>
 </div>
@@ -20,20 +22,18 @@
                     </a>
                 </p>
                 <h1 class="text-center mb-4"><i class="fas fa-3x fa-user-cog"></i></h1>
-                <form action="/loginAdmin" method="POST">
+                <form action="/loginAdmin" method="POST" id="adminForm">
                     <div class="input-group mb-3 input-group-lg">
                         <div class="input-group-prepend">
                             <span class="input-group-text bg-light">
                                 <i class="fas fa-key fa-2x text-danger"></i>
                             </span>
                         </div>
-                        <input class="form-control" id="pin" type="password" name="pin" placeholder="PIN"
-                            requaired="requaired" />
-                        <input type="hidden" name="color" value="undefined" />
-                        <input type="hidden" name="icon" value="undefined" />
-                        <input type="hidden" name="loginAs" value="undefined" />
+                        <input class="form-control" id="pinAdmin" type="password" name="pin" placeholder="PIN"
+                            requaired="requaired"/>
+                        <input type="hidden" name="loginAs" value="admin"/>
                     </div>
-                    <button class="btn btn-outline-light w-100 btn-lg" type="submit">Login</button>
+                    <button class="btn btn-outline-light w-100 btn-lg" id="btnAdmin" type="button">Login</button>
                 </form>
             </div>
         </div>

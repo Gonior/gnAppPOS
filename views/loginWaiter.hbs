@@ -15,24 +15,33 @@
         <div class="col-md-5 col-sm-11">
             <div class="p-4 text-white bg-dark">
                 <p class="text-left mb-0">
-                    <a href="/loginTakingOrder" method="POST">
+                    <a href="/" method="POST">
                         <i class="fas fa-arrow-circle-left fa-3x text-white"></i>
                     </a>
                 </p>
                 <h1 class="text-center mb-4">
                     <i class="fas fa-3x fa-store"></i>
                 </h1>
-                <form action="/login" method="POST">
+                <form action="/loginTakingOrder" method="POST" id="TOForm">
+                    <div class="input-group mb-3 input-group-lg">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-wifi fa-2x text-dark"></i>
+                            </span>
+                        </div>
+                        <input class="form-control" id="ipWaiter" type="text" name="ip" placeholder="xxx.xxx.xxx.xxx"
+                            requaired="requaired" />
+                    </div>
                     <div class="input-group mb-3 input-group-lg">
                         <div class="input-group-prepend">
                             <span class="input-group-text bg-light">
                                 <i class="fas fa-key fa-2x text-dark"></i>
                             </span>
                         </div>
-                        <input class="form-control" id="pin" type="password" name="pin" placeholder="PIN"
-                            requaired="requaired" />
+                        <input class="form-control" id="pinWaiter" type="password" name="pin" placeholder="PIN" required>
+                        <input type="hidden" name="loginAS" value="waiter">
                     </div>
-                    <button class="btn btn-outline-light w-100 btn-lg" type="submit">Login</button>
+                    <button class="btn btn-outline-light w-100 btn-lg" type="button" id="btnTO">Login</button>
                 </form>
             </div>
         </div>

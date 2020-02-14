@@ -15,24 +15,25 @@
         <div class="col-md-5 col-sm-11">
             <div class="p-4 text-white bg-info">
                 <p class="text-left mb-0">
-                    <a href="/loginKasir" method="POST">
+                    <a href="/">
                         <i class="fas fa-arrow-circle-left fa-3x text-white"></i>
                     </a>
                 </p>
                 <h1 class="text-center mb-4">
                     <i class="fas fa-3x fa-calculator"></i>
                 </h1>
-                <form action="/login" method="POST">
+                <form action="/loginKasir" method="POST" id="kasirForm">
                     <div class="input-group mb-3 input-group-lg">
                         <div class="input-group-prepend">
                             <span class="input-group-text bg-light">
                                 <i class="fas fa-key fa-2x text-info"></i>
                             </span>
                         </div>
-                        <input class="form-control" id="pin" type="password" name="pin" placeholder="PIN"
+                        <input class="form-control" id="pinKasir" type="password" name="pin" placeholder="PIN"
                             requaired="requaired" />
+                        <input type="hidden" name="loginAS" value="kasir">
                     </div>
-                    <button class="btn btn-outline-light w-100 btn-lg" type="submit">Login</button>
+                    <button class="btn btn-outline-light w-100 btn-lg" type="button" id="btnKasir">Login</button>
                 </form>
             </div>
         </div>
