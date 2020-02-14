@@ -14,7 +14,7 @@ const users = [
         posisi : 'admin'
     },
     {
-        id = '141297',
+        id : '141297',
         nama : 'Dedi cahya',
         pin : '141297',
         posisi : 'kasir'
