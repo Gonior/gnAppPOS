@@ -3,7 +3,8 @@
         <div class="col-md-7">
             {{#if isError}}
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>{{pesan.header}}</strong> {{pesan.isiPesan}}.
+                {{!-- <strong>{{pesan.header}}</strong> {{pesan.isiPesan}} --}}
+                {{pesan}}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

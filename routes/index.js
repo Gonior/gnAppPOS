@@ -1,10 +1,10 @@
-"use Strict"
-
-
 const express = require('express')
-const {body , validationResult} = require('express-validator')
+const auth = require('../config/auth')
 
 const router = express.Router()
+const secret = "dedi cahya"
+var session_store;
+
 
 const users = [
     {
@@ -21,20 +21,30 @@ const users = [
     }
     
 ]
-router.get('/',(req, res) => {
+
+router.get('/',auth.sudah_loginAdmin,(req, res) => {
     res.render('wellcomeScreen',{title : 'Wellcome Screen'})
 })
 
-router.get('/loginAdmin', (req , res) => {
+router.get('/loginAdmin',auth.sudah_loginAdmin, (req , res) => {
     res.render("loginAdmin")
 })
 
 router.post('/loginAdmin', (req, res) => {
-    const hasil = users.find(users => users.pin === req.body.pin && users.posisi === "admin");
-    if (hasil) res.redirect('/admin')
+    session_store = req.session
+    const hasil = users.find(users => users.pin === req.body.pin && users.posisi === "admin")
+
+    if (hasil) { 
+        
+        session_store.nama = hasil.nama
+        session_store.id = hasil.id
+        session_store.pin = hasil.pin
+        session_store.logged_in = true
+        
+        res.redirect('/admin')
+    }
     else {
-        let pesan = {header : 'PIN Salah', isiPesan : 'Silakan coba lagi'}
-        res.render('loginAdmin', {isError : true ,pesan : pesan})
+        res.render('loginAdmin',{isError:true, pesan : 'PIN anda Salah'})
     }
 })
 
@@ -54,8 +64,9 @@ router.post('/loginTakingOrder',(req, res) => {
     res.json(req.body)
 })
 
-
-
-
-
+router.get('/logoutAdmin',(req, res)=>{
+    req.session.destroy((err) => {
+        if (!err) res.redirect('/loginAdmin')
+    })
+})
 module.exports = router
