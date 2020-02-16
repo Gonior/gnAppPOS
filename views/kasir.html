@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KasirApp</title>
+    <style>
+        * {
+  box-sizing: border-box;
+}
+    #editContainer {
+        display: none;
+    }
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+        input[type=text] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box; 
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="column">
+        <input type="text" placeholder="masukan kode menu" id="inputKode"> 
+        <h1>Total Rp : <span id="subtotal">0</span></h1>
+        <table>
+            <thead>
+                <th>Qty</th>
+                <th>NAMA MENU</th>
+                <th>TOTAL</th>
+            </thead>
+            <tbody id="result">
+                
+            </tbody>
+        </table>
+    </div>
+    <div class="column" id="editContainer">
+        nama Menu :
+        <input type="text" placeholder="nama menu" id="editNamaMenu"><br> 
+        Jumlah : 
+        <input type="text" placeholder="qty.." id="editQty"> <br>
+        Harga : 
+        <input type="text" placeholder="harga.." id="editHarga"> <br>
+        Total : 
+        <input type="text" readonly placeholder="total" id="editTotal">
+        <input type="hidden" id="editKode" >
+        <input type="hidden" id="editNamaMenuBefore" >
+        <input type="hidden" id="editQtyBefore" >
+        <button id="okEdit" onclick="okEdit()">OK</button>
+        <button id="cancel" onclick="cancelEdit()">Cancel</button>
+    </div>
+    </div>
+</body>
+<script>
+
+    window.addEventListener('load',() => {
+        if (localStorage.getItem('pesanan') != null) {
+            if (confirm("Tekan 'OK' untuk melanjutkan?")) {
+                var tempData = ambilData()
+                tempData.forEach(e => {
+                    pesanan.push(e)
+                })
+                pesanan.forEach(e => {
+                    membuatRow(e)
+                })
+                hitung()
+            } else hapusData()
+        } 
+    })
+    const __ = (namaKelas) => {
+        return document.getElementsByClassName(namaKelas)
+    }
+
+    const _ = (id) => {
+        return document.getElementById(id)
+    }
+    const inputan = document.getElementById('inputKode')
+    const pesanan = []
+    const MENUS = [
+        {
+            kode : 1,
+            namaMenu : 'NASI PUTIH',
+            harga : 10000
+        },
+        {
+            kode : 2,
+            namaMenu : 'LALAB SAMBAL',
+            harga : 5000
+        },
+        {
+            kode : 3,
+            namaMenu : 'AYAM GORENG',
+            harga : 16000
+        },{
+            kode : 4,
+            namaMenu : 'BEBEK GORENG',
+            harga : 22000
+        }
+    ]
+    inputan.addEventListener('keyup', (event) => {
+        if (event.keyCode === 13) {
+            if(!inputan.value.trim() == "") {
+                mergingMenu(initialObject(inputan.value))
+                hitung()
+                simpanData()
+            } else alert("kosong?")
+            inputan.value = ''
+        }
+    })
+    _('editQty').addEventListener('keyup', (e) => {
+        var qty = parseFloat(_('editQty').value)
+        var harga = parseFloat(_('editHarga').value)
+        if (isNaN(qty) || qty == "") {
+            _('editTotal').value = 0
+        }
+        else _('editTotal').value = qty * harga
+    })
+    _('editHarga').addEventListener('keyup', (e) => {
+        var qty = parseFloat(_('editQty').value)
+        var harga = parseFloat(_('editHarga').value)
+        if (isNaN(harga) || harga == "") {_('editTotal').value = 0}
+        else _('editTotal').value = qty * harga
+    })
+    const cariMenu = (menu) => {
+        var menubaru = {}
+        var temp = {}
+        if (MENUS.find(MENUS => MENUS.kode === menu.kode)) {
+            temp = MENUS.find(MENUS => MENUS.kode === menu.kode)
+            menubaru.qty = menu.qty
+            menubaru.namaMenu = temp.namaMenu
+            menubaru.harga = temp.harga
+            menubaru.total = menu.qty * temp.harga 
+            menubaru.kode = menu.kode
+            
+        } else {
+            alert('Kode Menu tidak ada')
+            menubaru = null
+        }
+        return menubaru
+    }
+    const hapusRow = (id) => {
+        var a = document.getElementById(id)
+        var index = id.indexOf('-') + 1
+        var kode = parseFloat(id.substring(index, id.length))
+        a.parentNode.removeChild(a)
+        var tempMenu = pesanan.find(pesanan => pesanan.kode === kode)
+        pesanan.splice(pesanan.indexOf(tempMenu), 1)
+        simpanData()
+        hitung()
+        if (__('namaMenu').length == 0) {
+            hapusData()
+        }
+    }
+    const simpanData = () => {
+        localStorage.setItem('pesanan', JSON.stringify(pesanan))
+    }
+    const ambilData = () => {
+        return JSON.parse(localStorage.getItem('pesanan'))
+    }
+    const hapusData = () => {
+        localStorage.clear()
+    }
+    const membuatRow = (menu)=> {
+        var nodeTr = document.createElement('tr')
+        nodeTr.id = 'parent-'+menu.kode
+        var nodeTdQty = document.createElement('td')
+        var nodeTdNamaMenu = document.createElement('td')
+        var nodeTdTotal = document.createElement('td')
+        var nodeTxtQty = document.createTextNode(menu.qty)
+        var nodeTxtNamaMenu = document.createTextNode(menu.namaMenu)
+        var nodeTxtTotal = document.createTextNode(menu.qty * menu.harga)
+        var btnHapus = document.createElement('button')
+        var btnEdit = document.createElement('button')
+        var btnTextHapus = document.createTextNode('hapus')
+        var btnTextEdit = document.createTextNode('edit')
+        btnHapus.appendChild(btnTextHapus)
+        btnEdit.id = 'btnEdit-'+menu.kode
+        btnHapus.id = 'btnHapus-'+menu.kode
+        btnEdit.appendChild(btnTextEdit)
+        btnHapus.setAttribute("onclick","hapusRow('parent-"+menu.kode+"')")
+        btnEdit.setAttribute("onclick","editMenu('parent-"+menu.kode+"')")
+        nodeTdQty.className = "qty"
+        nodeTdNamaMenu.className = "namaMenu"
+        nodeTdTotal.className = 'total'
+        var iHidden = document.createElement('input')
+        iHidden.type = 'hidden'
+        iHidden.className = 'kodeClass'
+        iHidden.id = 'kode-'+menu.kode
+        iHidden.value = menu.kode
+        var iHiddenHarga = document.createElement('input')
+        iHiddenHarga.type = 'hidden'
+        iHiddenHarga.id = 'harga-'+menu.kode
+        iHiddenHarga.className = 'hargaClass'
+        iHiddenHarga.value = menu.harga
+        nodeTdQty.appendChild(nodeTxtQty)
+        nodeTdNamaMenu.appendChild(nodeTxtNamaMenu)
+        nodeTdTotal.appendChild(nodeTxtTotal)
+        nodeTr.appendChild(nodeTdQty)
+        nodeTr.appendChild(nodeTdNamaMenu)
+        nodeTr.appendChild(nodeTdTotal)
+        nodeTr.appendChild(btnHapus)
+        nodeTr.appendChild(btnEdit)
+        nodeTr.appendChild(iHidden)
+        nodeTr.appendChild(iHiddenHarga)
+        document.getElementById('result').appendChild(nodeTr)
+    }
+    
+    
+    const hitung =() => {
+        var sb = 0
+        for (let i = 0; i < __('total').length ; i++) {
+            sb = sb + parseFloat(__('total')[i].innerText)
+        }
+        document.getElementById('subtotal').innerText = sb
+    }
+    const mergingMenu = (menu) => {
+        var data = []
+        var hasil = false
+        var z = 0
+        if (menu !== null) {
+            data = __('kodeClass');
+            for (i = 0; i< data.length;i++) {
+                if (data[i].value == menu.kode && pesanan.find(pesanan => pesanan.kode === menu.kode)) {
+                    hasil = true
+                    z = i
+                }
+            }
+            if (hasil) {
+                var x = parseFloat(__('qty')[z].innerText) + menu.qty
+                
+                __('qty')[z].innerText = x
+                __('hargaClass')[z].value = menu.harga
+                __('namaMenu')[z].innerText = menu.namaMenu
+                var t = parseFloat(__('qty')[z].innerText) * parseFloat(__('hargaClass')[z].value)
+                __('total')[z].innerText = t
+                __('kodeClass')[z].value = menu.kode
+                var tempMenu = pesanan.find(pesanan => pesanan.kode === menu.kode)
+                tempMenu.qty = tempMenu.qty + menu.qty
+                tempMenu.harga = menu.harga
+                tempMenu.total = tempMenu.qty * tempMenu.harga
+                tempMenu.kode = menu.kode
+                tempMenu.namaMenu = menu.namaMenu
+                pesanan.find(pesanan => pesanan.kode === menu.kode).qty = tempMenu.qty
+                pesanan.find(pesanan => pesanan.kode === menu.kode).harga = tempMenu.harga
+                pesanan.find(pesanan => pesanan.kode === menu.kode).total = tempMenu.total
+                pesanan.find(pesanan => pesanan.kode === menu.kode).namaMenu = tempMenu.namaMenu
+                pesanan.find(pesanan => pesanan.kode === menu.kode).kode = tempMenu.kode
+            } else {
+                membuatRow(menu)
+                pesanan.push(menu)
+            }    
+        }
+    }
+    const editMenu = (id) => {
+        _('editContainer').style.display = 'block'
+        var a = document.getElementById(id)
+        var qty = parseFloat(a.children[0].textContent)
+        var namaMenu = a.children[1].textContent
+        var harga = parseFloat(a.children[6].value)
+        var kode = parseFloat(a.children[5].value)
+        var total = qty * harga
+        var menu = { qty, harga, namaMenu, total, kode}
+        editingMenu(menu)
+    }
+    const okEdit = () => {
+        var menu = {}
+        menu.namaMenu = _('editNamaMenu').value
+        menu.qty =parseFloat(_('editQty').value)
+        menu.harga =parseFloat(_('editHarga').value)
+        menu.total =parseFloat(_('editTotal').value)
+        menu.kode = parseFloat(_('editKode').value)
+        menu.qty = menu.qty - parseFloat(_('editQtyBefore').value)
+        mergingMenu(menu)
+        hitung()
+        
+        if (menu.namaMenu.toUpperCase() !== _('editNamaMenuBefore').value.toUpperCase()) {
+            var newKode = Math.random()
+            _('kode-'+menu.kode).value = newKode 
+            _('kode-'+menu.kode).id = 'kode-'+newKode
+            pesanan.find(pesanan => pesanan.kode === menu.kode).kode = newKode
+            _('parent-'+menu.kode).id = 'parent-'+newKode
+            _('harga-'+menu.kode).id = 'harga-'+newKode
+            _('btnEdit-'+menu.kode).setAttribute("onclick","editMenu('parent-"+newKode+"')")
+            _('btnHapus-'+menu.kode).setAttribute("onclick","hapusRow('parent-"+newKode+"')")
+            __('btnEdit-'+menu.kode).id = 'btnEdit-'+newKode
+            __('btnHapus-'+menu.kode).id = 'btnHapus-'+newKode
+        }
+        _('editNamaMenuBefore').value = ""
+        _('editKode').value = ""
+        _('editQtyBefore').value = ""
+        simpanData()
+        _('editContainer').style.display = 'none'
+    }
+    const cancelEdit = () => {
+        _('editContainer').style.display = 'none'
+        _('editNamaMenu').value = ""
+        _('editQty').value = ""
+        _('editHarga').value = ""
+        _('editTotal').value = ""
+        _('editNamaMenuBefore').value = ""
+        _('editKode').value = ""
+        _('editQtyBefore').value = ""
+    }
+    const editingMenu = (menu) => {
+        _('editNamaMenu').value = menu.namaMenu
+        _('editQty').value = menu.qty
+        _('editHarga').value = menu.harga
+        _('editTotal').value = menu.total
+        _('editNamaMenuBefore').value = menu.namaMenu
+        _('editKode').value = menu.kode
+        _('editQtyBefore').value = menu.qty
+    }
+    const initialObject = (str) => {
+        var tempStr = Array.from(str)
+        var isBintang = false
+        var menu = {}
+        var qty = ""
+        var kode = ""
+        var i = 0
+        tempStr.forEach(element => {
+            if(element === '*') {
+                isBintang = true
+                i = tempStr.indexOf(element)
+            }
+        })
+        if (isBintang) {
+            if (i > 0) {
+                qty = parseFloat(str.substring(0,i))
+                kode = parseFloat(str.substring(i+1,str.length))
+            } 
+            else {
+                qty = 1
+                kode = parseFloat(str.substring(1, str.length))
+            } 
+        } else {
+            qty = 1
+            if(!isNaN(parseFloat(str))) kode = parseFloat(str)
+            else kode = 0 
+        }
+        menu.kode = kode
+        menu.qty = qty
+        menu = cariMenu(menu)
+        return menu
+    }
+</script>
+</html>
