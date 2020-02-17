@@ -1,9 +1,7 @@
-
 const express = require("express")
 const bodyParser = require("body-parser")
 const xhbs = require("express-handlebars")
 const path = require("path")
-const flash = require('express-flash');
 const session = require('express-session');
 
 const app = express()
@@ -20,7 +18,16 @@ app.engine('hbs', xhbs(
         extname : "hbs",
         defaultLayout : "layout",
         layoutsDir: path.join(__dirname + '/views/layouts/'),
-        partialsDir : path.join(__dirname+"views/modal")
+        partialsDir : path.join(__dirname+"views/modal"),
+        helpers : {
+            section: function (name, options) {
+                if (!this._sections) {
+                    this._sections = {}
+                }
+                this._sections[name] = options.fn(this)
+                return null
+            }
+        }
     }
 ))
 
@@ -30,7 +37,7 @@ app.use(bodyParser.urlencoded({extended : true}))
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname,'public')))
 app.use(session({secret:"rahasia12345", resave : true, saveUninitialized : true}));
-app.use(flash());
+
 
 app.use('/', indexRoute)
 app.use('/admin', adminRoute)

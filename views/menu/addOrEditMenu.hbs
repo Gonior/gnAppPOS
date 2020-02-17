@@ -1,0 +1,174 @@
+<div class="container bg-color-info">
+    <div class="row mt-5">
+        <div class="col-md-6 offset-md-3">
+            <h3 class="display-4">{{title}}</h3>
+            <form action="/admin/addOrEditMenu" method="post" autocomplete="off" id="addOrEditForm">
+                <input type="hidden" name="idMenu" id="idMenu"/>
+                <div class="form-group">
+                    <label class="col-form-label" for="kodeMenu">Kode menu</label>
+                    <input class="form-control w-50" id="kodeMenu" type="text" name="kodeMenu" value="" />
+                    <small class="text-danger form-text" id="kodeMenuError"></small></div>
+                <div class="form-group">
+                    <label class="col-form-label" for="namaMenu">Nama menu</label>
+                    <input class="form-control" id="namaMenu" type="text" name="namaMenu" value="" />
+                    <small class="text-danger form-text" id="namaMenuError"></small></div>
+                <div class="form-group">
+                    <label class="col-form-label" for="kategori">Kategori</label>
+                    <select class="form-control" id="kategori" name="kategori">
+                        <option value="umum">Umum</option>
+                    </select></div>
+                <div class="form-row">
+                    <div class="col form-group">
+                        <label class="col-form-label" for="hargaRegular">Harga regular</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Rp</span>
+                            </div>
+                            <input class="form-control" id="hargaRegular" type="text" name="hargaRegular" value="" />
+                        </div>
+                        <small class="text-danger form-text" id="hargaRegularError"></small>
+                    </div>
+                    <div class="col form-group">
+                        <label class="col-form-label" for="hargaGofood">Harga Go-food</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Rp</span>
+                            </div>
+                            <input class="form-control" id="hargaGofood" type="text" name="hargaGofood"
+                                value="" />
+                        </div>
+                        <small class="text-danger form-text" id="hargaGofoodError"></small>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col form-group">
+                        <button type="button" id="btnSaveMenu" class="btn btn-info"><i class="fas fa-database"></i> Save</button>
+                        <a href="/admin/" type="button" class="btn btn-danger"><i class="fas fa-times"></i> Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+{{#section 'script'}}
+<script>
+    
+    const data = JSON.parse('{{{data}}}')
+    var kodeMenu = _('kodeMenu')
+    var namaMenu = _('namaMenu')
+    var hargaRegular = _('hargaRegular')
+    var hargaGofood = _('hargaGofood')
+    var idMenu = _('idMenu')
+    var kodeMenuError = _('kodeMenuError')
+    var namaMenuError = _('namaMenuError')
+    var hargaRegularError = _('hargaRegularError')
+    var hargaGofoodError = _('hargaGofoodError')
+    kodeMenu.value = ""
+    namaMenu.value = ""
+    hargaGofood.value = ""
+    hargaRegular.value = ""
+    const validasiKodeMenu = (kode) => {
+        var message = ''
+        var hasil = true
+        if (isNaN(kode)) {
+            message = "Masukan angka"
+            hasil = false
+        }
+        if (kode.trim() == "") {
+            message = 'Tidak boleh kosong'
+            hasil = false
+        }
+        if (parseInt(Array.from(kode)[0]) === 0) {
+            message = 'Kode menu tidak bisa diawali dengan \'0\''
+            hasil = false
+        }
+        if(data.find(data => data.kode === parseInt(kode)))  {
+            message = "Kode sudah digunakan"
+            hasil = false
+        }
+        
+        return {hasil , message}
+    }
+    const validasiNamaMenu = (str) => {
+        var message = ''
+        var hasil = true
+        if (str.trim() == "") {
+            message = 'Tidak boleh kosong'
+            hasil = false
+        }
+        var cekRegex = str.match(/[^A-Za-z ]+/g)
+        if (!cekRegex == "") {
+            message = 'Tidak boleh menggunakan angka maupun karakter'
+            hasil = false
+        }
+        return {hasil, message}
+    }
+    const validasiHarga = (harga) => {
+        var message = ''
+        var hasil = true
+        if (isNaN(harga)) {
+            message = "Masukan Harga"
+            hasil = false
+        }
+        if (harga.trim() == "") {
+            message = 'Tidak boleh kosong'
+            hasil = false
+        }
+        
+        return {hasil , message}
+    }
+    kodeMenu.addEventListener("keyup" , (e) => {
+        if (idMenu.value == '') {
+
+            if (!validasiKodeMenu(kodeMenu.value).hasil) {
+                kodeMenuError.innerText =  validasiKodeMenu(kodeMenu.value).message
+            } else kodeMenuError.innerText = ""            
+        }
+    })
+    namaMenu.addEventListener('keyup', () => {
+        var menu = validasiNamaMenu(namaMenu.value)
+        if(!menu.hasil) namaMenuError.innerText = menu.message
+        else namaMenuError.innerText = ""
+    })
+    hargaRegular.addEventListener('keyup', (e) => {
+        var hasil = validasiHarga(hargaRegular.value)
+        if (!hasil.hasil) hargaRegularError.innerText = hasil.message
+        else hargaRegularError.innerText = hasil.message
+    })
+    hargaGofood.addEventListener('keyup', (e) => {
+        var hasil = validasiHarga(hargaGofood.value)
+        if (!hasil.hasil) hargaGofoodError.innerText = hasil.message
+        else hargaGofoodError.innerText = hasil.message
+    })
+$(document).ready(function() {
+    $('#btnSaveMenu').click(function(e) {
+        
+        console.log(e)
+        if (validasiHarga(hargaRegular.value).hasil && validasiKodeMenu(kodeMenu.value).hasil && validasiNamaMenu(namaMenu.value).hasil && validasiHarga(hargaGofood.value).hasil) {
+            Swal.fire(
+                'Menu Berhasil disimpan!',
+                'Anda akan dialihkan ke halaman admin!',
+                'success'
+            ).then(function () {
+                $('#addOrEditForm').submit()
+            })
+        } else {
+            $('#kodeMenuError').text(validasiKodeMenu(kodeMenu.value).message)
+            $('#namaMenuError').text(validasiKodeMenu(namaMenu.value).message)
+            $('#hargaRegularError').text(validasiKodeMenu(hargaRegular.value).message)
+            $('#hargaGofoodError').text(validasiKodeMenu(hargaGofood.value).message)
+            Swal.fire({
+                icon: "error",
+                title: "Gagal Menyimpan Menu",
+                text: "Maaf, kayaknya masih ada yang salah. Silakan periksa kembali Form",
+            });
+        }
+    })
+})
+
+
+</script>
+
+{{/section}}

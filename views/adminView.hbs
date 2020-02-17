@@ -17,8 +17,12 @@
     <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade show active" id="pills-menu" role="tabpanel" aria-labelledby="pills-menu-tab">
             <div class="display-3 text-center mb-3">Daftar Menu</div>
-            <div class="row">
-                <div class="col-md-2"><button class="btn btn-outline-info" data-toggle="modal" data-target="#tambahDanEditMenuModal"><i class="fas fa-plus"></i><span>Tambah menu</span></button></div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <a href="/admin/addOrEditMenu" class="btn btn-outline-info"><i class="fas fa-plus"></i>
+                        <span>Tambah menu</span>
+                        </a>
+                    </div>
                 <div class="col-md-5 pl-0">
                     <div class="input-group"><input class="form-control mySearchBar" id="mySearchBar" type="text" placeholder="Cari menu.." />
                         <div class="input-group-append"><button class="btn btn-dark myBtn" id="myBtn">Cari</button></div>
@@ -128,18 +132,41 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalTitleMenu">Add New Menu</h5><button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-            <div class="modal-body"><input type="hidden" name="idMenu" />
-                <!-- ini paling penting bro-->
-                <div class="form-group"><label class="col-form-label" for="kodeMenu">Kode menu</label><input class="form-control w-50" id="kodeMenu" type="number" name="kodeMenu" value="" /><small class="text-danger form-text" id="kodeMenuError"></small></div>
-                <div class="form-group"><label class="col-form-label" for="namaMenu">Nama menu</label><input class="form-control" id="namaMenu" type="text" name="namaMenu" value="" /><small class="text-danger form-text" id="namaMenuError"></small></div>
-                <div class="form-group"><label class="col-form-label" for="kategori">Kategori</label><select class="form-control" id="kategori" name="kategori"><option value="umum">Umum</option><option value="Menu Bakar">Menu Bakar</option><option value="Menu Goreng">Menu Goreng</option></select></div>
+            <div class="modal-body">
+                <input type="hidden" name="idMenu" />
+                <div class="form-group">
+                    <label class="col-form-label" for="kodeMenu">Kode menu</label>
+                    <input class="form-control w-50" id="kodeMenu" type="number" name="kodeMenu" value="" />
+                    <small class="text-danger form-text" id="kodeMenuError"></small></div>
+                <div class="form-group">
+                    <label class="col-form-label" for="namaMenu">Nama menu</label>
+                    <input class="form-control" id="namaMenu" type="text" name="namaMenu" value="" />
+                    <small class="text-danger form-text" id="namaMenuError"></small></div>
+                <div class="form-group">
+                    <label class="col-form-label" for="kategori">Kategori</label>
+                    <select class="form-control" id="kategori" name="kategori">
+                        <option value="umum">Umum</option><option value="Menu Bakar">Menu Bakar</option>
+                        <option value="Menu Goreng">Menu Goreng</option></select></div>
                 <div class="form-row">
-                    <div class="col form-group"><label class="col-form-label" for="hargaRegular">Harga regular</label>
+                    <div class="col form-group">
+                        <label class="col-form-label" for="hargaRegular">Harga regular</label>
                         <div class="input-group">
-                            <div class="input-group-prepend"><span class="input-group-text">Rp</span></div><input class="form-control" id="hargaRegular" type="number" name="hargaRegular" value="" /></div><small class="text-danger form-text" id="hargaRegularError"></small></div>
-                    <div class="col form-group"><label class="col-form-label" for="hargaGofood">Harga Go-food</label>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Rp</span>
+                                </div>
+                            <input class="form-control" id="hargaRegular" type="number" name="hargaRegular" value="" />
+                        </div>
+                        <small class="text-danger form-text" id="hargaRegularError"></small></div>
+                    <div class="col form-group">
+                        <label class="col-form-label" for="hargaGofood">Harga Go-food</label>
                         <div class="input-group">
-                            <div class="input-group-prepend"><span class="input-group-text">Rp</span></div><input class="form-control" id="hargaGofoodErorr" type="number" name="hargaGofood" value="" /></div><small class="text-danger form-text" id="hargaGoFoodLabel"></small></div>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Rp</span>
+                            </div>
+                            <input class="form-control" id="hargaGofoodErorr" type="number" name="hargaGofood" value="" />
+                        </div>
+                        <small class="text-danger form-text" id="hargaGoFoodLabel"></small>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer"><button class="btn btn-secondary" data-dismiss="modal" type="button">Tutup</button><button class="btn btn-primary">Simpan</button></div>

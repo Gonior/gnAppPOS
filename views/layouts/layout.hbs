@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{{title}}</title>
+    <title>GnApp</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/fontawesome-free/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    
+
+</head>
+<body>
+    <div class="container-fluid">
+        {{{body}}}
+    </div>
+    
     <script src="/js/jquery-3.4.1.min.js"></script>
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/myscript.js"></script>
     <script src="/js/sweetalert2.all.min.js"></script>
 
-</head>
-<body>
-    {{{body}}}
+    {{{_sections.script}}}
 </body>
 </html>

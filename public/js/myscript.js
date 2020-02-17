@@ -1,6 +1,11 @@
-function _(id) {
+const _ = (id) => {
     return document.getElementById(id);
 }
+
+const __= (className) => {
+    return document.getElementsByClassName(className)
+}
+
 function validasiPIN(a) {
     var pin = _(a).value.trim();
         if (pin == "") {

@@ -1,26 +1,7 @@
 const express = require('express')
 const auth = require('../config/auth')
-
 const router = express.Router()
-const secret = "dedi cahya"
 var session_store;
-
-
-const users = [
-    {
-        id : '123456',
-        nama : 'admin',
-        pin : '123456',
-        posisi : 'admin'
-    },
-    {
-        id : '141297',
-        nama : 'Dedi cahya',
-        pin : '141297',
-        posisi : 'kasir'
-    }
-    
-]
 
 router.get('/',auth.sudah_loginAdmin,(req, res) => {
     res.render('wellcomeScreen',{title : 'Wellcome Screen'})
@@ -29,11 +10,10 @@ router.get('/',auth.sudah_loginAdmin,(req, res) => {
 router.get('/loginAdmin',auth.sudah_loginAdmin, (req , res) => {
     res.render("loginAdmin")
 })
-
+const SuperAdminPin = 141297
 router.post('/loginAdmin', (req, res) => {
     session_store = req.session
-    const hasil = users.find(users => users.pin === req.body.pin && users.posisi === "admin")
-
+    const hasil = parseInt(req.body.pin) === SuperAdminPin
     if (hasil) { 
         
         session_store.nama = hasil.nama
