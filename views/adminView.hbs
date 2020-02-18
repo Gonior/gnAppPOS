@@ -5,7 +5,7 @@
             <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Menu</a>
                 <!-- -->
                 <div class="dropdown-menu"><a class="dropdown-item" id="pills-menu-tab" data-toggle="pill" href="#pills-menu" role="tab" aria-controls="pills-menu" aria-selected="true">Menu</a><a class="dropdown-item" id="pills-kategori-tab" data-toggle="pill" href="#pills-kategori"
-                        role="tab" aria-controls="pills-kategori" aria-selected="false">Kategori Menu</a></div>
+                    role="tab" aria-controls="pills-kategori" aria-selected="false">Kategori Menu</a></div>
             </li>
             <li class="nav-item"><a class="nav-link" id="pills-user-tab" data-toggle="pill" href="#pills-user" role="tab" aria-controls="pills-user" aria-selected="false">Pengguna</a></li>
             <li class="nav-item"><a class="nav-link" id="pills-resto-tab" data-toggle="pill" href="#pills-resto" role="tab" aria-controls="pills-resto" aria-selected="false">Tentang Resto</a></li>
@@ -39,15 +39,31 @@
                     <th scope="col">Action</th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th>3</th>
-                        <td>Ayam bakar</td>
-                        <td>Rp 16.000</td>
-                        <td>Rp 20.000</td>
-                        <td>Menu Bakar</td>
-                        <td><button class="btn btn-danger btn-sm" style="border-radius: 5px;" data-toggle="modal" data-target="#hapusMenuModal"><i class="fas fa-minus"></i></button><button class="btn btn-info btn-sm" style="border-radius: 5px;" data-toggle="modal"
-                                data-target="#tambahDanEditMenuModal"><i class="fas fa-pen"></i></button></td>
-                    </tr>
+                    {{#if kosong}}
+                        <tr>
+                            <td colspan="6"><h1>Menu Masih kosong</h1></td>
+                        </tr>
+                    {{else}}
+                        {{#each menu}}
+                        <tr>
+                            <th>{{this.kode}}</th>
+                            <td id='namaMenuId-{{_id}}'>{{namaMenu}}</td>
+                            <td>Rp {{hargaRegular}}</td>
+                            <td>Rp {{hargaGoFood}}</td>
+                            <td>{{kategori}}</td>
+                            <td>
+                                <a href="/admin/addOrEditMenu/{{_id}}" class="btn btn-info btn-sm" style="border-radius: 5px;" >
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                                
+                                <a class="btn btn-danger btn-sm" style="border-radius: 5px;" onclick="hapusMenu('namaMenuId-{{_id}}')" >
+                                    <i class="fas fa-trash text-white"></i>
+                                </a>
+
+                            </td>
+                        </tr>
+                        {{/each}}
+                    {{/if}}
                 </tbody>
             </table>
         </div>
@@ -124,67 +140,7 @@
 </div>
 
 <!-- menu modal-->
-<!-- User Modal-->
-<!-- modal-->
-<!-- menu modal-->
-<div class="modal fade" id="tambahDanEditMenuModal">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalTitleMenu">Add New Menu</h5><button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-            <div class="modal-body">
-                <input type="hidden" name="idMenu" />
-                <div class="form-group">
-                    <label class="col-form-label" for="kodeMenu">Kode menu</label>
-                    <input class="form-control w-50" id="kodeMenu" type="number" name="kodeMenu" value="" />
-                    <small class="text-danger form-text" id="kodeMenuError"></small></div>
-                <div class="form-group">
-                    <label class="col-form-label" for="namaMenu">Nama menu</label>
-                    <input class="form-control" id="namaMenu" type="text" name="namaMenu" value="" />
-                    <small class="text-danger form-text" id="namaMenuError"></small></div>
-                <div class="form-group">
-                    <label class="col-form-label" for="kategori">Kategori</label>
-                    <select class="form-control" id="kategori" name="kategori">
-                        <option value="umum">Umum</option><option value="Menu Bakar">Menu Bakar</option>
-                        <option value="Menu Goreng">Menu Goreng</option></select></div>
-                <div class="form-row">
-                    <div class="col form-group">
-                        <label class="col-form-label" for="hargaRegular">Harga regular</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Rp</span>
-                                </div>
-                            <input class="form-control" id="hargaRegular" type="number" name="hargaRegular" value="" />
-                        </div>
-                        <small class="text-danger form-text" id="hargaRegularError"></small></div>
-                    <div class="col form-group">
-                        <label class="col-form-label" for="hargaGofood">Harga Go-food</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Rp</span>
-                            </div>
-                            <input class="form-control" id="hargaGofoodErorr" type="number" name="hargaGofood" value="" />
-                        </div>
-                        <small class="text-danger form-text" id="hargaGoFoodLabel"></small>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer"><button class="btn btn-secondary" data-dismiss="modal" type="button">Tutup</button><button class="btn btn-primary">Simpan</button></div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="hapusMenuModal">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="tambahMenuLabel">Delete Menu</h5><button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-            <div class="modal-body">
-                <div class="display-5">Hapus menu &quot;Ayam goreng&quot;?</div>
-            </div>
-            <div class="modal-footer"><button class="btn btn-secondary" data-dismiss="modal" type="button">Tidak</button><button class="btn btn-danger">Ya</button></div>
-        </div>
-    </div>
-</div>
+
 <div class="modal fade" id="tambahDanEditUserModal">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -240,3 +196,26 @@
 </div>
 <!-- Kategori Modal-->
 <!-- end modal-->
+{{#section 'script'}}
+<script>
+    
+    const hapusMenu = (str) => {
+        let namaMenu = _(str).innerText
+        let strLinkId = 
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            text: `akan menghapus "${namaMenu}"`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Hapus aja'
+        }).then((result) => {
+        if (result.value) {
+            window.location.href = `/admin/delete/${str.substr(11)}`
+        }
+        })
+    }
+</script>
+
+{{/section}}

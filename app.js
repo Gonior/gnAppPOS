@@ -2,7 +2,8 @@ const express = require("express")
 const bodyParser = require("body-parser")
 const xhbs = require("express-handlebars")
 const path = require("path")
-const session = require('express-session');
+const session = require('express-session')
+require('./models/menu.model')
 
 const app = express()
 

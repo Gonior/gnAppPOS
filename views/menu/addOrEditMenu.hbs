@@ -3,20 +3,26 @@
         <div class="col-md-6 offset-md-3">
             <h3 class="display-4">{{title}}</h3>
             <form action="/admin/addOrEditMenu" method="post" autocomplete="off" id="addOrEditForm">
-                <input type="hidden" name="idMenu" id="idMenu"/>
+                <input type="hidden" name="idMenu" id="idMenu" value='{{menu.id}}' />
                 <div class="form-group">
                     <label class="col-form-label" for="kodeMenu">Kode menu</label>
-                    <input class="form-control w-50" id="kodeMenu" type="text" name="kodeMenu" value="" />
+                    <input class="form-control w-50" id="kodeMenu" type="text" name="kodeMenu" value='{{menu.kode}}' />
                     <small class="text-danger form-text" id="kodeMenuError"></small></div>
                 <div class="form-group">
                     <label class="col-form-label" for="namaMenu">Nama menu</label>
-                    <input class="form-control" id="namaMenu" type="text" name="namaMenu" value="" />
+                    <input class="form-control" id="namaMenu" type="text" name="namaMenu" value='{{menu.namaMenu}}' />
                     <small class="text-danger form-text" id="namaMenuError"></small></div>
                 <div class="form-group">
                     <label class="col-form-label" for="kategori">Kategori</label>
-                    <select class="form-control" id="kategori" name="kategori">
-                        <option value="umum">Umum</option>
-                    </select></div>
+                    <select class="form-control" id="kategori" name="kategori" value>
+                        <option value="MENU GORENG">MENU GORENG</option>
+                        <option value="Umum">Umum</option>
+                        <option value="" hidden="hidden" selected="selected"></option>
+                        
+                        <option value="MENU BAKAR">MENU BAKAR</option>
+                        <option value="MENU PEPES">MENU PEPES</option>
+                    </select>
+                </div>
                 <div class="form-row">
                     <div class="col form-group">
                         <label class="col-form-label" for="hargaRegular">Harga regular</label>
@@ -24,7 +30,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Rp</span>
                             </div>
-                            <input class="form-control" id="hargaRegular" type="text" name="hargaRegular" value="" />
+                            <input class="form-control" id="hargaRegular" type="text" name="hargaRegular" value='{{menu.hargaRegular}}' />
                         </div>
                         <small class="text-danger form-text" id="hargaRegularError"></small>
                     </div>
@@ -34,8 +40,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Rp</span>
                             </div>
-                            <input class="form-control" id="hargaGofood" type="text" name="hargaGofood"
-                                value="" />
+                            <input class="form-control" id="hargaGofood" type="text" name="hargaGofood" value='{{menu.hargaGoFood}}' />
                         </div>
                         <small class="text-danger form-text" id="hargaGofoodError"></small>
                     </div>
@@ -54,7 +59,6 @@
 
 {{#section 'script'}}
 <script>
-    
     const data = JSON.parse('{{{data}}}')
     var kodeMenu = _('kodeMenu')
     var namaMenu = _('namaMenu')
@@ -65,10 +69,7 @@
     var namaMenuError = _('namaMenuError')
     var hargaRegularError = _('hargaRegularError')
     var hargaGofoodError = _('hargaGofoodError')
-    kodeMenu.value = ""
-    namaMenu.value = ""
-    hargaGofood.value = ""
-    hargaRegular.value = ""
+    
     const validasiKodeMenu = (kode) => {
         var message = ''
         var hasil = true
@@ -84,7 +85,8 @@
             message = 'Kode menu tidak bisa diawali dengan \'0\''
             hasil = false
         }
-        if(data.find(data => data.kode === parseInt(kode)))  {
+        // todo 
+        if(data.find(data => parseInt(data.kode) === parseInt(kode)))  {
             message = "Kode sudah digunakan"
             hasil = false
         }
@@ -121,12 +123,15 @@
     }
     kodeMenu.addEventListener("keyup" , (e) => {
         if (idMenu.value == '') {
-
             if (!validasiKodeMenu(kodeMenu.value).hasil) {
                 kodeMenuError.innerText =  validasiKodeMenu(kodeMenu.value).message
             } else kodeMenuError.innerText = ""            
+        } else {
+            if (data.find(data => data._id === idMenu.value).kode !== parseInt(kodeMenu.value)) kodeMenuError.innerText =  validasiKodeMenu(kodeMenu.value).message
+            else kodeMenuError.innerText = ""
         }
     })
+
     namaMenu.addEventListener('keyup', () => {
         var menu = validasiNamaMenu(namaMenu.value)
         if(!menu.hasil) namaMenuError.innerText = menu.message
@@ -144,24 +149,31 @@
     })
 $(document).ready(function() {
     $('#btnSaveMenu').click(function(e) {
-        
-        console.log(e)
-        if (validasiHarga(hargaRegular.value).hasil && validasiKodeMenu(kodeMenu.value).hasil && validasiNamaMenu(namaMenu.value).hasil && validasiHarga(hargaGofood.value).hasil) {
+        var kodeValid = false
+        if (idMenu.value == '') {
+            if (!validasiKodeMenu(kodeMenu.value).hasil) {
+                kodeMenuError.innerText = validasiKodeMenu(kodeMenu.value).message
+            } else kodeValid = true
+        } else {
+            if (data.find(data => data._id === idMenu.value).kode !== parseInt(kodeMenu.value)) kodeMenuError.innerText =  validasiKodeMenu(kodeMenu.value).message
+            else kodeValid = true
+        }
+        if (validasiHarga(hargaRegular.value).hasil && kodeValid && validasiNamaMenu(namaMenu.value).hasil && validasiHarga(hargaGofood.value).hasil) {
             Swal.fire(
-                'Menu Berhasil disimpan!',
-                'Anda akan dialihkan ke halaman admin!',
+                'Menu VALID!',
+                'Tekan \'OK\' untuk menyimpan dan kembali ke halaman Admin !',
                 'success'
             ).then(function () {
                 $('#addOrEditForm').submit()
             })
         } else {
             $('#kodeMenuError').text(validasiKodeMenu(kodeMenu.value).message)
-            $('#namaMenuError').text(validasiKodeMenu(namaMenu.value).message)
+            $('#namaMenuError').text(validasiNamaMenu(namaMenu.value).message)
             $('#hargaRegularError').text(validasiKodeMenu(hargaRegular.value).message)
             $('#hargaGofoodError').text(validasiKodeMenu(hargaGofood.value).message)
             Swal.fire({
                 icon: "error",
-                title: "Gagal Menyimpan Menu",
+                title: "Menu TIDAK VALID",
                 text: "Maaf, kayaknya masih ada yang salah. Silakan periksa kembali Form",
             });
         }
