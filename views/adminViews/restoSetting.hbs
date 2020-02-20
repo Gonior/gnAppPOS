@@ -1,0 +1,47 @@
+{{> navbar}}
+<div class="container">
+    <div class="display-3 text-center mb-3">Tentang Resto Anda</div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form action=""><input id="idResto" type="hidden" name="idResto" />
+                <div class="form-group">
+                    <label for="namaResto">Nama Resto</label>
+                    <input class="form-control" id="namaResto" type="text" name="namaResto" />
+                    <small class="text-danger" id="namaRestoError"></small>
+                </div>
+                <div class="form-group">
+                    <label for="alamatResto">Alamat</label>
+                    <input class="form-control" id="alamatResto" type="text" name="alamatResto" />
+                    <small class="text-danger" id="alamatRestoError"></small>
+                </div>
+                <div class="form-row">
+                    <div class="col form-group">
+                        <label class="col-form-label" for="noMobile">Mobile Phone</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">+62</span>
+                            </div>
+                            <input class="form-control" id="noMobile" type="number" name="noMobile" value="" />
+                        </div>
+                        <small class="text-danger form-text" id="noMobileError"></small>
+                    </div>
+                    <div class="col form-group">
+                        <label class="col-form-label" for="noTelp">No Telepon</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">022</span>
+                            </div>
+                            <input class="form-control" id="noTelp" type="number" name="noTelp" value="" />
+                        </div>
+                        <small class="text-danger form-text" id="noTelpError"></small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="footerMsg">Footer (Pesan)</label>
+                    <input class="form-control" id="footerMsg" type="text" name="footerMsg" />
+                    <small class="text-danger" id="footerMsgError"></small>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

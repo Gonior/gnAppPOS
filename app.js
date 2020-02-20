@@ -3,7 +3,6 @@ const bodyParser = require("body-parser")
 const xhbs = require("express-handlebars")
 const path = require("path")
 const session = require('express-session')
-require('./models/menu.model')
 
 const app = express()
 
@@ -19,7 +18,7 @@ app.engine('hbs', xhbs(
         extname : "hbs",
         defaultLayout : "layout",
         layoutsDir: path.join(__dirname + '/views/layouts/'),
-        partialsDir : path.join(__dirname+"views/modal"),
+        partialsDir : path.join(__dirname+"/views/navbarView"),
         helpers : {
             section: function (name, options) {
                 if (!this._sections) {

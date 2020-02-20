@@ -1,0 +1,217 @@
+{{> navbar}}
+<div class="container">
+    <h1 class="display-3 text-center mb-4">Daftar Kategori</h1>
+    <div class="row">
+        <div class="col-md-3">
+            <button class="btn btn-outline-info" data-toggle="modal" data-target="#tambahKategori">
+                <i class="fas fa-plus"></i>
+                <span>Tambah Kategori</span>
+            </button>
+        </div>
+    </div>
+    <table class="table table-hover table-responsive-sm mt-2">
+        <thead class="thead-light">
+            <th scope="col">Nama Kategori</th>
+            <th scope="col">Action</th>
+        </thead>
+        <tbody>
+            {{#if kosong}}
+                <tr>
+                    <td colspan="6">
+                        <h1 class="text-center">Kategori masih kosong</h1>
+                    </td>
+                </tr>
+            {{else}}
+                {{#each kategori}}
+            <tr id="kategoriId-{{_id}}">
+                <input type="hidden" value="{{_id}}"/>
+                <td>{{namaKategori}}</td>
+                <td>
+                    <button class="btn btn-danger btn-sm" style="border-radius: 5px;" onclick="hapusKategori('kategoriId-{{_id}}')">
+                        <i class="fas fa-trash"></i>
+                    </button>                
+                    <button class="btn btn-info btn-sm" style="border-radius: 5px;" data-toggle="modal" data-target="#editKategoriModal" onclick="editKategori('kategoriId-{{_id}}')">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                </td>
+            </tr>
+                {{/each}}
+            {{/if}}
+        </tbody>
+    </table>
+</div>
+
+{{!-- modal --}}
+{{!-- tambah kategori --}}
+<div class="modal fade" id="tambahKategori">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleKategori">Tambah kategori baru</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/admin/kategori/addOrEditKategori" method="post" id="formKategori" autocomplete="off">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="hidden" name="idKategori" value="">
+                        <label class="col-form-label" for="namaKategori">Nama Kategori</label>
+                        <input class="form-control" id="namaKategori" type="text" name="namaKategori" required="required"/>
+                        <small class="text-danger form-text" id="kategoriError"></small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal" type="button">Tutup</button>
+                    <button class="btn btn-primary" type="button" id='btn-simpan'>Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{!-- edit kategori --}}
+<div class="modal fade" id="editKategoriModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleKategori">Edit Kategori</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/admin/kategori/addOrEditKategori" method="post" id="formKategoriEdit" autocomplete="off">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="hidden" name="idKategoriEdit" id="idKategoriEdit" value="">
+                        <label class="col-form-label" for="namaKategoriEdit">Nama Kategori</label>
+                        <input class="form-control" id="namaKategoriEdit" type="text" name="namaKategoriEdit" value="" required="required"/>
+                        <small class="text-danger form-text" id="kategoriErrorEdit"></small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal" type="button">Tutup</button>
+                    <button class="btn btn-primary" type="button" id="btn-edit-simpan">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{!-- hapus kategori --}}
+<div class="modal fade" id="hapusKategoriModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Menu</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {{!-- <form action="/admin/kategori/delete/" method="post"></form> --}}
+            <div class="modal-body">
+                <div class="display-5" id="hapusMenu"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Tidak</button>
+                <button class="btn btn-danger">Ya</button></div>
+        </div>
+    </div>
+</div>
+
+{{!-- end modal --}}
+
+{{#section 'script'}}
+<script>
+    
+    const kategori = JSON.parse('{{{dataKategori}}}')
+    const listMenu = JSON.parse('{{{dataMenu}}}')
+    const editKategori = (strID) => {
+        let idC = _(strID).children[0].value
+        let name = _(strID).children[1].innerText
+        _('idKategoriEdit').value = idC
+        _('namaKategoriEdit').value = name
+    }
+    _('namaKategoriEdit').addEventListener('keyup', (e) => {
+        if (kategori.find(kategori => kategori._id === _('idKategoriEdit').value).namaKategori.toUpperCase() !== _('namaKategoriEdit').value.toUpperCase()) {
+            _('kategoriErrorEdit').innerText = validasiKategori(_('namaKategoriEdit').value).message
+        } else _('kategoriErrorEdit').innerText = ""
+    })
+    _('formKategoriEdit').onkeypress = (e) => {
+        if (e.keyCode === 13) {
+            if (kategori.find(kategori => kategori._id === _('idKategoriEdit').value).namaKategori.toUpperCase() !== _('namaKategoriEdit').value.toUpperCase()) {
+                if (!validasiKategori(_('namaKategoriEdit').value)) {
+                    _('kategoriErrorEdit').innerText = validasiKategori(_('namaKategoriEdit').value).message
+                    e.preventDefault()
+                }
+            } else _('kategoriErrorEdit').innerText = ""
+        }
+    }
+    _('btn-edit-simpan').addEventListener('click', (e) => {
+        if (kategori.find(kategori => kategori._id === _('idKategoriEdit').value).namaKategori.toUpperCase() !== _('namaKategoriEdit').value.toUpperCase()) {
+            if (!validasiKategori(_('namaKategoriEdit').value)) {
+                _('kategoriErrorEdit').innerText = validasiKategori(_('namaKategoriEdit').value).message
+                e.preventDefault()
+            } else _('formKategoriEdit').submit()
+        } else _('formKategoriEdit').submit()
+    })
+    const hapusKategori = (str) => {
+        let namaKategori = _(str).children[1].innerText
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            text: `akan menghapus "${namaKategori}"`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Hapus aja'
+        }).then((result) => {
+        if (result.value) {
+            if (listMenu.find(listMenu => listMenu.kategori.toUpperCase() === namaKategori)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Menghapus',
+                    text: 'kategori yang aktif tidak bisa dihapus'
+                })
+            }
+            else {
+                window.location.href = `/admin/kategori/delete/${str.substr(11)}`
+            }
+        }
+        })
+    }
+    
+    let inputNamaKategori = _('namaKategori')
+    let btnS =  _('btn-simpan')
+    const validasiKategori = (str) => {
+        let message = ""
+        let hasil = true
+        if (str.trim() === "")  {
+            message = "Nama menu tidak boleh kosong"
+            hasil = false
+        }
+        if (kategori.find(kategori => kategori.namaKategori.toUpperCase() === str.toUpperCase())) {
+            message = "Kategori tersebut sudah ada"
+            hasil = false
+        }
+        return {hasil , message}
+    }
+    inputNamaKategori.addEventListener('keyup', (e) => {
+        if (!validasiKategori(inputNamaKategori.value).hasil) {
+            _('kategoriError').innerText = validasiKategori(inputNamaKategori.value).message
+        } else _('kategoriError').innerText = ""
+    })
+    _('formKategori').onkeypress = (e) => {
+        if (e.keyCode === 13) {
+            if (!validasiKategori(inputNamaKategori.value).hasil) {
+                e.preventDefault()
+                _('kategoriError').innerText = validasiKategori(inputNamaKategori.value).message
+            } else _('kategoriError').innerText = ""
+        }
+    }
+    btnS.addEventListener('click', (e) => {
+        if (!validasiKategori(inputNamaKategori.value).hasil) {
+            e.preventDefault()
+            _('kategoriError').innerText = validasiKategori(inputNamaKategori.value).message
+        } else _('formKategori').submit()
+    })
+</script>
+{{/section}}

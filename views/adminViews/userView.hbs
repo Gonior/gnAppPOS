@@ -1,0 +1,78 @@
+{{> navbar}}
+<div class="container">
+    <div class="display-3 text-center mb-3">Daftar Pengguna</div>
+    <div class="row">
+        <div class="col-md-3">
+            <button class="btn btn-outline-primary" data-toggle="modal" data-target="#tambahDanEditUserModal">
+                <i class="fas fa-plus"></i>
+                <span>Tambah Pengguna</span>
+            </button>
+        </div>
+    </div>
+    <table class="table table-hover table-responsive-sm mt-2">
+        <thead class="thead-dark">
+            <th scope="col">Nama Pengguna</th>
+            <th scope="col">PIN</th>
+            <th scope="col">Action</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Admin</td>
+                <td>123456</td>
+                <td>
+                    <button class="btn btn-danger btn-sm" style="border-radius: 5px;" data-toggle="modal" data-target="#hapusUserModal">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button class="btn btn-info btn-sm" style="border-radius: 5px;" data-toggle="modal"
+                        data-target="#tambahDanEditUserModal"><i class="fas fa-pen"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{{!-- modal --}}
+<div class="modal fade" id="tambahDanEditUserModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleUser">Add New User</h5><button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+            <div class="modal-body"><input type="hidden" name="idUser" />
+                <!-- ini paling penting bro-->
+
+                <div class="form-group">
+                    <label class="col-form-label" for="namaUser">Nama User</label><input class="form-control" id="namaUser" type="text" name="namaUser" value="" />
+                    <small class="text-danger form-text" id="namaUserError"></small>
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label" for="pinUser">PIN User</label>
+                    <input class="form-control w-50" id="pinUser" type="number" name="pinUser" value="" />
+                    <small class="text-danger form-text" id="pinUserError"></small>
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label" for="kategori">Kategori</label>
+                    <select class="form-control" id="kategori" name="kategori">
+                        <option value="Admin">Admin</option>
+                        <option value="Kasir">Kasir</option>
+                        <option value="Manager">Manager</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-secondary" data-dismiss="modal" type="button">Tutup</button><button class="btn btn-primary">Simpan</button></div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="hapusUserModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Menu</h5><button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+            <div class="modal-body">
+                <div class="display-5">Hapus &quot;Dedi Cahya&quot;?</div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-secondary" data-dismiss="modal" type="button">Tidak</button><button class="btn btn-danger">Ya</button></div>
+        </div>
+    </div>
+</div>
+<!-- end User Modal-->

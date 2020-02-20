@@ -14,13 +14,20 @@
                     <small class="text-danger form-text" id="namaMenuError"></small></div>
                 <div class="form-group">
                     <label class="col-form-label" for="kategori">Kategori</label>
-                    <select class="form-control" id="kategori" name="kategori" value>
-                        <option value="MENU GORENG">MENU GORENG</option>
-                        <option value="Umum">Umum</option>
-                        <option value="" hidden="hidden" selected="selected"></option>
+                    {{menu.kategori}}
+                    <select class="form-control" id="kategori" name="kategori" required>
+                            {{#if baru}}
+                                {{#each kategori}}    
+                                <option value="{{namaKategori}}">{{namaKategori}}</option>     
+                                {{/each}}
+                            {{else}}
+                                <option value="{{menu.kategori}}" hidden="hidden" selected="selected">{{menu.kategori}}</option>
+                                {{#each kategori}}    
+                                <option value="{{namaKategori}}">{{namaKategori}}</option>     
+                                {{/each}}
+                            {{/if}}
                         
-                        <option value="MENU BAKAR">MENU BAKAR</option>
-                        <option value="MENU PEPES">MENU PEPES</option>
+                        
                     </select>
                 </div>
                 <div class="form-row">

@@ -8,7 +8,7 @@ router.get('/',auth.sudah_loginAdmin,(req, res) => {
 })
 
 router.get('/loginAdmin',auth.sudah_loginAdmin, (req , res) => {
-    res.render("loginAdmin")
+    res.render("loginViews/loginAdmin")
 })
 const SuperAdminPin = 141297
 router.post('/loginAdmin', (req, res) => {
@@ -24,12 +24,12 @@ router.post('/loginAdmin', (req, res) => {
         res.redirect('/admin')
     }
     else {
-        res.render('loginAdmin',{isError:true, pesan : 'PIN anda Salah'})
+        res.render('loginViews/loginAdmin',{isError:true, pesan : 'PIN anda Salah'})
     }
 })
 
 router.get('/loginKasir', (req , res) => {
-    res.render("loginKasir")
+    res.render("loginViews/loginKasir")
 })
 
 router.post('/loginKasir',(req, res) => {
@@ -37,7 +37,7 @@ router.post('/loginKasir',(req, res) => {
 }) 
 
 router.get('/loginTakingOrder', (req , res) => {
-    res.render("loginWaiter")
+    res.render("loginViews/loginWaiter")
 })
 
 router.post('/loginTakingOrder',(req, res) => {
