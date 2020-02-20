@@ -131,7 +131,6 @@ router.post('/kategori/addOrEditKategori', auth.check_loginAdmin, (req, res) => 
                 if (indikator) {
                     menuModel.update({kategori : indikator.namaKategori},{$set : {kategori : req.body.namaKategoriEdit}}, {multi : true}, (err, num) => {
                         console.log('replaced----->' +num)
-                        console.log('woi')
                     })
                 }
             }
