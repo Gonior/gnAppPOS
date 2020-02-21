@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require('../config/auth')
 const menuModel = require('../models/menu.model')
 const kategoriModel = require('../models/kategori.model')
+const userModel = require('../models/user.model')
 var session_store
 const menu = {}
 
@@ -142,12 +143,101 @@ router.post('/kategori/addOrEditKategori', auth.check_loginAdmin, (req, res) => 
 })
 
 router.get('/user', auth.check_loginAdmin, (req, res) => {
-    res.render('adminViews/userView')
+    session_store = req.session
+    userModel.find({}, (err, hasil) => {
+        if (!err) {
+            if ( hasil.length >= 1) {
+                res.render('adminViews/userView', {
+                    users : hasil,
+                    kosong : false
+                })
+            } else {
+                res.render('adminViews/userView', {
+                    kosong : true
+                })
+            }
+            
+        }
+    })
+})
+
+router.get('/user/addOrEditUser', auth.check_loginAdmin, (req, res) => {
+    session_store = req.session
+    let dataUser
+    userModel.find({}, (err, doc) => {
+        if (!err) {
+            if (doc.length >= 1) {
+                dataUser = doc
+                res.render('adminViews/addOrEditUser' , {
+                    title : 'Tambah User',
+                    data : JSON.stringify(dataUser),
+                    baru : true
+                })
+            }
+        }
+    })
+    
+})
+
+router.get('/user/addOrEditUser/:id', auth.check_loginAdmin, (req, res) => {
+    session_store = req.session
+    let dataUser
+    userModel.find({}, (err, doc) => {
+        if (!err) {
+            if (doc.length >= 1) {
+                dataUser = doc
+            }
+        }
+    })
+    userModel.findOne({'_id' : req.params.id }, (err, hasil) => {
+        if (!err) {
+            if(hasil) {
+                res.render('adminViews/addOrEditUser' , {
+                    title : 'Edit User', 
+                    data : JSON.stringify(dataUser),
+                    user : hasil, 
+                    baru : false
+                })
+            }
+        }
+    })
+    
+})
+
+router.post('/user/addOrEditUser', auth.check_loginAdmin, (req, res) => {
+    session_store = req.session
+    let user = {}
+    if (!req.body.idUser) {
+        user.nama = req.body.namaUser
+        user.pin = req.body.pinUser
+        user.role = req.body.sebagai
+        insertRecord(user, userModel)
+        res.redirect('/admin/user')
+    } else  {
+        user.nama = req.body.namaUser
+        user.pin = req.body.pinUser
+        user.role = req.body.sebagai
+        updateRecord(user, req.body.idUser, userModel)
+        res.redirect('/admin/user')
+    }
+})
+
+router.get('/user/delete/:id', auth.check_loginAdmin, (req, res) => {
+    userModel.findOne({'_id' : req.params.id}, {}, (err, document) => {
+        if (!err) {
+            if (document) {
+                userModel.remove({'_id' : req.params.id})
+                res.redirect('/admin/user')
+            } else res.render('errorLayout', {pesanStatus : 404, pesan : 'Menu yang anda cari tidak ada'})
+        } else console(err)
+    })
 })
 
 router.get('/resto', auth.check_loginAdmin, (req , res )=> {
     res.render('adminViews/restoSetting')
 })
+
+
 
 const insertRecord = (doc, database) => {
     if (doc) {

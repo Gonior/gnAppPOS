@@ -1,6 +1,7 @@
 const express = require('express')
 const auth = require('../config/auth')
 const router = express.Router()
+const userModel = require('../models/user.model')
 var session_store;
 
 router.get('/',auth.sudah_loginAdmin,(req, res) => {
@@ -10,22 +11,35 @@ router.get('/',auth.sudah_loginAdmin,(req, res) => {
 router.get('/loginAdmin',auth.sudah_loginAdmin, (req , res) => {
     res.render("loginViews/loginAdmin")
 })
-const SuperAdminPin = 141297
+
 router.post('/loginAdmin', (req, res) => {
     session_store = req.session
-    const hasil = parseInt(req.body.pin) === SuperAdminPin
-    if (hasil) { 
-        
-        session_store.nama = hasil.nama
-        session_store.id = hasil.id
-        session_store.pin = hasil.pin
-        session_store.logged_in = true
-        
-        res.redirect('/admin')
-    }
-    else {
-        res.render('loginViews/loginAdmin',{isError:true, pesan : 'PIN anda Salah'})
-    }
+
+    userModel.findOne({'role' : 'Admin', 'pin' : req.body.pin}, (err, hasil) => {
+        if (!err) {
+            if (hasil || req.body.pin == "141297") { 
+                try {
+                    session_store.nama = hasil.nama
+                    session_store.id = hasil._id
+                    session_store.pin = hasil.pin
+                    session_store.role = hasil.role
+                    session_store.logged_in = true    
+                    res.redirect('/admin')
+                } catch (e) {
+                    session_store.nama = 'Super Admin'
+                    session_store.id = ''
+                    session_store.pin = '141297'
+                    session_store.role = 'Super Admin'
+                    session_store.logged_in = true    
+                    res.redirect('/admin')
+                }
+            }
+            else {
+                res.render('loginViews/loginAdmin',{isError:true, pesan : 'PIN anda Salah'})
+            }
+        }
+    })
+    
 })
 
 router.get('/loginKasir', (req , res) => {

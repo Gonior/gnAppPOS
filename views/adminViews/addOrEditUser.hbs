@@ -1,0 +1,146 @@
+<div class="container bg-color-info">
+    <div class="row mt-5">
+        <div class="col-md-6 offset-md-3">
+            <h3 class="display-4">{{title}}</h3>
+            <form action="/admin/user/addOrEditUser" method="post" id="user-form" autocomplete="off">
+                <input type="hidden" name="idUser" id="idUser" value="{{user._id}}">
+                <div class="form-group">
+                    <label class="col-form-label" for="namaUser">Nama User</label>
+                    <input class="form-control" id="namaUser" type="text" name="namaUser" value="{{user.nama}}" />
+                    <small class="text-danger form-text" id="namaUserError"></small>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label class="col-form-label" for="pinUser">PIN</label>
+                        <input class="form-control w-50" id="pinUser" type="text" name="pinUser" value="{{user.pin}}"/>
+                        <small class="text-danger form-text" id="pinUserError"></small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label" for="sebagai">Sebagai</label>
+                    <select class="form-control" id="sebagai" name="sebagai" required>
+                    {{#if baru}}
+                        <option value=""></option>
+                    {{else}}
+                        <option value="{{user.role}}" selected="selected" hidden="hidden">{{user.role}}</option>
+                    {{/if}}
+                    <option value="Admin">Admin</option>
+                        <option value="Kasir">Kasir</option>
+                        <option value="Manager">Manager</option>
+                        <option value="Waiter">Waiter</option>
+                    </select>
+                    <small class="text-danger form-text" id="sebagaiUserError"></small>
+                </div>
+                <button class="btn btn-info" type="button" id="btn-simpan-user"> 
+                    <i class="fas fa-database"></i> Simpan
+                </button>
+                <a href="/admin/user" class="btn btn-danger" type="button"><i class="fas fa-times"></i> Tutup</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{#section 'script'}}
+<script>
+    const dataUser = JSON.parse('{{{data}}}')
+$(document).ready(function() {
+    
+    console.log(dataUser)
+    let user = {}
+    const validasiPin = (p1) => {
+        var message = ''
+        var hasil = true
+        if (isNaN(p1)) {
+            message = "PIN Hanya Boleh menggunakan angka"
+            hasil = false
+        }
+        if (p1.length <= 3) {
+            message = "PIN harus lebih dari 3 karakter"
+            hasil = false
+        }
+        if (p1.trim() == "") {
+            message = 'PIN tidak boleh kosong'
+            hasil = false
+        }
+        if (dataUser.find(dataUser => dataUser.pin == p1)) {
+            message = 'PIN Sudah digunakan'
+            hasil = false
+        }
+        return {hasil , message}
+    }
+    const validasiAs = (as) => {
+        let message = ""
+        let hasil = true
+        if (as.trim() == "") {
+            message = "Pilih salah satu"
+            hasil = false
+        }
+        return {message , hasil}
+    }
+    const validasiNama = (str) => {
+        var message = ''
+        var hasil = true
+
+        if (str.trim() == "") {
+            message = 'Nama Pengguna Tidak boleh kosong'
+            hasil = false
+        }
+        var cekRegex = str.match(/[^A-Za-z ]+/g)
+        if (!cekRegex == "") {
+            message = 'Tidak boleh menggunakan angka maupun karakter'
+            hasil = false
+        }
+        return {hasil, message}
+    }
+    const validasiUser = (user) => {
+        if (!validasiNama(user.nama).hasil || !validasiPin(user.pin).hasil || !validasiAs(user.sebagai).hasil) {
+            $('#namaUserError').text(validasiNama(user.nama).message)
+            $('#pinUserError').text(validasiPin(user.pin).message)
+            $('#sebagaiUserError').text(validasiAs(user.sebagai).message)
+            return false
+        } else {
+            $('#namaUserError').text("")
+            $('#pinUserError').text("")
+            $('#sebagaiUserError').text("")
+            return true
+        }
+    }
+    $('#btn-simpan-user').on('click', function() {    
+        user.nama = $('#namaUser').val().trim()
+        user.id = $('#idUser').val().trim()
+        user.pin = $('#pinUser').val().trim()
+        user.sebagai = $('#sebagai').val()
+        let valid 
+        if (user.id == "") {
+            valid = validasiUser(user)
+        } else {
+            if (dataUser.find(dataUser => dataUser._id === user.id).pin !== user.pin.trim()){
+                valid = validasiUser(user) 
+            } else {
+                valid = true
+                $('#namaUserError').text("")
+                $('#pinUserError').text("")
+                $('#sebagaiUserError').text("")
+                }
+        }
+
+        if (valid) {
+            Swal.fire(
+                'User Valid',
+                'Silakan tekan \'OK\' untuk menyimpan user dan kembali ke halaman Pengguna',
+                'success'
+            ).then(function () {
+                $('#user-form').submit()
+            })
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'User TIDAK VALID',
+                text: 'Silakan periksa kembali form'
+            })
+        }
+    } )
+})
+
+</script>
+{{/section}}
