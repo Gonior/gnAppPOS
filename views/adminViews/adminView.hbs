@@ -10,13 +10,13 @@
                         </a>
                     </div>
                 <div class="col-md-5 pl-0">
-                    <div class="input-group"><input class="form-control mySearchBar" id="mySearchBar" type="text" placeholder="Cari menu.." />
-                        <div class="input-group-append"><button class="btn btn-dark myBtn" id="myBtn">Cari</button></div>
+                    <div class="input-group"><input class="form-control" id="input-cari" type="text" placeholder="Cari menu.." />
                     </div>
                 </div>
             </div>
-            <table class="table table-hover table-responsive-sm mt-2">
+            <table class="table table-hover table-responsive-sm mt-2 myMenu"  >
                 <thead class="thead-dark">
+                    <th scope="col">NO</th>
                     <th scope="col">Kode Menu</th>
                     <th scope="col">Nama Menu</th>
                     <th scope="col">Harga Regular</th>
@@ -24,16 +24,17 @@
                     <th scope="col">Kategori</th>
                     <th scope="col">Action</th>
                 </thead>
-                <tbody>
+                <tbody id="myTable">
                     {{#if kosong}}
                         <tr>
-                            <td colspan="6">
+                            <td colspan="7">
                                 <h1 class="text-center">Menu Masih kosong</h1></td>
                         </tr>
                     {{else}}
                         {{#each menu}}
-                        <tr>
-                            <th>{{this.kode}}</th>
+                        <tr class="menu">
+                            <td class="menutd"></td>
+                            <th class="menutd text-center">{{this.kode}}</th>
                             <td id='namaMenuId-{{_id}}'>{{namaMenu}}</td>
                             <td>Rp {{hargaRegular}}</td>
                             <td>Rp {{hargaGoFood}}</td>
@@ -75,6 +76,16 @@
         }
         })
     }
+
+$(document).ready(function(){
+    $('#input-cari').on('keyup', function() {
+        let value = $(this).val().toUpperCase()
+        $("#myTable tr").filter(function() {
+            $(this).toggle($(this).text().toUpperCase().indexOf(value) > -1)
+        })
+    })
+})
+
 </script>
 
 {{/section}}
